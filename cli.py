@@ -12,6 +12,7 @@ except ImportError:
 from html.parser import HTMLParser
 
 class YoudaoParser(HTMLParser):
+    """parse data from dict.youdao.com"""
     def __init__(self):
         self.position = ''
         self.content = {
@@ -78,7 +79,9 @@ class YoudaoParser(HTMLParser):
             self.position = ''
 
 if __name__ == "__main__":
-    url = 'http://dict.youdao.com/search?q=' + sys.argv[1].replace(' ', '+')
+    url = 'http://dict.youdao.com/search?q='
+    for argv in sys.argv[1:]:
+        url += argv + '+'
     webpage = urllib.request.urlopen(url)
     data = str(webpage.read(), encoding='utf-8')
     data = data.strip('\'b')
@@ -98,7 +101,6 @@ if __name__ == "__main__":
             not content.get('definition_web'):
         print("Not found.")
         sys.exit()
-    # beautiful sequence number
     if content.get('definition_zh'):
         print()
         print("中文翻译：")
